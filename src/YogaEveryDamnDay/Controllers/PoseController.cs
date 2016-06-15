@@ -79,22 +79,22 @@ namespace FinalCapstone.Controllers
 
         //// GET api/values
         //[HttpGet]
-        //public IActionResult Get()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        public IActionResult Get()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    Pose poses = _context.Pose(m => m.PoseId == id);
+            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit).ToList();
 
-        //    if (poses == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (allPoses == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(poses);
-        //}
+            return Ok(allPoses);
+        }
 
 
         // POST api/values
@@ -140,14 +140,58 @@ namespace FinalCapstone.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Pose pose)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != pose.PoseId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(pose).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PoseExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return new StatusCodeResult(StatusCodes.Status204NoContent);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Pose pose = _context.Pose.Single(m => m.PoseId == id);
+            if (pose == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pose.Remove(pose);
+            _context.SaveChanges();
+
+            return Ok(pose);
         }
 
 
