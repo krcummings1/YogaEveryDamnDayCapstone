@@ -25,8 +25,29 @@ namespace FinalCapstone.Controllers
             _context = context;
         }
 
-        // GET: api/pose/sanskrit
+
+        //// GET api/values
         [HttpGet]
+        public IActionResult GetAll()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit);
+
+            if (allPoses == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(allPoses);
+        }
+
+
+        // GET: api/pose/sanskrit
+        [HttpGet("{sanskrit}", Name = "GetSanskrit")]
         public IActionResult Get([FromQuery] string sanskrit)
         {
             if (!ModelState.IsValid)
@@ -58,6 +79,7 @@ namespace FinalCapstone.Controllers
             return Ok(poses);
         }
 
+
         // GET api/values/5
         [HttpGet("{id}", Name = "GetPose")]
         public IActionResult Get(int id)
@@ -77,25 +99,6 @@ namespace FinalCapstone.Controllers
             return Ok(poses);
         }
 
-        //// GET api/values
-        //[HttpGet]
-        public IActionResult Get()
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit).ToList();
-
-            if (allPoses == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(allPoses);
-        }
-
 
         // POST api/values
         [HttpPost]
@@ -107,14 +110,14 @@ namespace FinalCapstone.Controllers
             }
 
 
-            var existingPose = from p in _context.Pose
-                               where p.Sanskrit == pose.Sanskrit
-                               select p;
+            //var existingPose = from p in _context.Pose
+            //                   where p.Sanskrit == pose.Sanskrit
+            //                   select p;
 
-            if (existingPose.Count<Pose>() > 0)
-            {
-                return new StatusCodeResult(StatusCodes.Status409Conflict);
-            }
+            //if (existingPose.Count<Pose>() > 0)
+            //{
+            //    return new StatusCodeResult(StatusCodes.Status409Conflict);
+            //}
 
 
             _context.Pose.Add(pose);
@@ -193,11 +196,6 @@ namespace FinalCapstone.Controllers
 
             return Ok(pose);
         }
-
-
-
-
-
 
 
         private bool PoseExists(int id)
