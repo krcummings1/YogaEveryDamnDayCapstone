@@ -14,7 +14,9 @@ namespace YogaEveryDamnDay.Models
         public string Sanskrit { get; set; }
         public string CommonName { get; set; }
         public string Description { get; set; }
-        public byte[] Base64Image { get; set; }
+        public string Image { get; set; }
+
+        public virtual IQueryable<Pose> PrepPoses { get; set; }
 
 
         [InverseProperty("BasePose")]
