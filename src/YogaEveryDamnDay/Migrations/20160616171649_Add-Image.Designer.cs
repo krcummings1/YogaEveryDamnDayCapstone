@@ -8,9 +8,10 @@ using YogaEveryDamnDay.Models;
 namespace YogaEveryDamnDay.Migrations
 {
     [DbContext(typeof(YogaEveryDamnDayContext))]
-    partial class YogaEveryDamnDayContextModelSnapshot : ModelSnapshot
+    [Migration("20160616171649_Add-Image")]
+    partial class AddImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
