@@ -11,8 +11,8 @@ namespace YogaEveryDamnDay.Models
     {
         [Key]
         public int PoseRelationshipId { get; set; }
-      //  public int Id { get; set; }
-      //  public int PrepPoseId { get; set; }
+        public int BasePosePoseId { get; set; }
+        public int PrepPosePoseId { get; set; }
 
         [InverseProperty("PoseAsBasePose")]
         public Pose BasePose { get; set; }

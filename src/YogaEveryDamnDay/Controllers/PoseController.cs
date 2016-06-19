@@ -62,8 +62,7 @@ namespace FinalCapstone.Controllers
                                          Sanskrit = pose.Sanskrit,
                                          CommonName = pose.CommonName,
                                          Description = pose.Description,
-                                         Base64Image = pose.Base64Image,
-                                         // FigurineHref = String.Format("/api/Inventory?GeekId={0}", pose.GeekId)
+                                         Image = pose.Image
                                      };
 
             if (sanskrit != null)
@@ -79,7 +78,6 @@ namespace FinalCapstone.Controllers
             return Ok(poses);
         }
 
-
         // GET api/values/5
         [HttpGet("{id}", Name = "GetPose")]
         public IActionResult Get(int id)
@@ -89,15 +87,63 @@ namespace FinalCapstone.Controllers
                 return BadRequest(ModelState);
             }
 
-            Pose poses = _context.Pose.Single(m => m.PoseId == id);
+            IQueryable<int> prepIds = from p in _context.Pose
+                       join pr in _context.PoseRelationship
+                       on p.PoseId equals pr.BasePosePoseId
+                       where p.PoseId == id
+                       select pr.PrepPosePoseId;
 
-            if (poses == null)
+            var prepNames = from p in _context.Pose
+                            where prepIds.Contains(p.PoseId)
+                            select new Pose
+                            {
+                                PoseId = p.PoseId,
+                                CommonName = p.CommonName,
+                                Sanskrit = p.Sanskrit,
+                                Description = p.Description,
+                                Image = p.Image
+                     
+                            };
+
+                var pose = from p in _context.Pose
+                        where p.PoseId == id
+                        select new Pose
+                        {
+                            PoseId = p.PoseId,
+                            CommonName = p.CommonName,
+                            Sanskrit = p.Sanskrit,
+                            Description = p.Description,
+                            Image = p.Image,
+                            PrepPoses = from prep in prepNames select prep
+                        };
+
+            if (pose == null)
             {
                 return NotFound();
             }
 
-            return Ok(poses);
+            return Ok(pose);
         }
+
+
+        // GET api/values/5
+        //[HttpGet("{id}", Name = "GetPose")]
+        //public IActionResult Get(int id)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    Pose poses = _context.Pose.Single(m => m.PoseId == id);
+
+        //    if (poses == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(poses);
+        //}
 
 
         // POST api/values
