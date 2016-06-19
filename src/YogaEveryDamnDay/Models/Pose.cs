@@ -16,6 +16,7 @@ namespace YogaEveryDamnDay.Models
         public string Description { get; set; }
         public string Image { get; set; }
 
+        [NotMapped]
         public virtual IQueryable<Pose> PrepPoses { get; set; }
 
 
