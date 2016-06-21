@@ -19,6 +19,11 @@ namespace YogaEveryDamnDay.Models
         [NotMapped]
         public virtual IQueryable<Pose> PrepPoses { get; set; }
 
+        [NotMapped]
+        public virtual IQueryable<Pose> AllPoses { get; set; }
+
+
+
 
         [InverseProperty("BasePose")]
         public virtual ICollection<PoseRelationship> PoseAsBasePose { get; set; }
