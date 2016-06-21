@@ -34,44 +34,44 @@ namespace FinalCapstone.Controllers
                 return BadRequest(ModelState);
             }
 
-            //var allPoses = _context.Pose.OrderBy(s => s.Sanskrit); // change GET method to bring back all poses without id
+            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit); // change GET method to bring back all poses without id
 
-            IQueryable<int> prepIds = from p in _context.Pose
-                                      join pr in _context.PoseRelationship
-                                      on p.PoseId equals pr.BasePosePoseId
-                                      //where p.PoseId == id
-                                      select pr.PrepPosePoseId;
+            //IQueryable<int> prepIds = from p in _context.Pose
+            //                          join pr in _context.PoseRelationship
+            //                          on p.PoseId equals pr.BasePosePoseId
+            //                          //where p.PoseId == id
+            //                          select pr.PrepPosePoseId;
 
-            var prepNames = from p in _context.Pose
-                            where prepIds.Contains(p.PoseId)
-                            select new Pose
-                            {
-                                PoseId = p.PoseId,
-                                CommonName = p.CommonName,
-                                Sanskrit = p.Sanskrit,
-                                Description = p.Description,
-                                Image = p.Image
+            //var prepNames = from p in _context.Pose
+            //                where prepIds.Contains(p.PoseId)
+            //                select new Pose
+            //                {
+            //                    PoseId = p.PoseId,
+            //                    CommonName = p.CommonName,
+            //                    Sanskrit = p.Sanskrit,
+            //                    Description = p.Description,
+            //                    Image = p.Image
 
-                            };
+            //                };
 
-            var pose = from p in _context.Pose
-                      // where p.PoseId == id
-                       select new Pose
-                       {
-                           PoseId = p.PoseId,
-                           CommonName = p.CommonName,
-                           Sanskrit = p.Sanskrit,
-                           Description = p.Description,
-                           Image = p.Image,
-                           AllPoses = from prep in prepNames select prep
-                       };
+            //var pose = from p in _context.Pose
+            //          // where p.PoseId == id
+            //           select new Pose
+            //           {
+            //               PoseId = p.PoseId,
+            //               CommonName = p.CommonName,
+            //               Sanskrit = p.Sanskrit,
+            //               Description = p.Description,
+            //               Image = p.Image,
+            //               PrepPoses = from prep in prepNames select prep
+            //           };
 
-            if (pose == null)
+            if (allPoses == null)
             {
                 return NotFound();
             }
 
-            return Ok(pose);
+            return Ok(allPoses);
         }
 
 
