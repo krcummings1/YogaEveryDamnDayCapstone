@@ -14,9 +14,16 @@ namespace YogaEveryDamnDay.Models
         public int PoseId { get; set; }
         public int CategoryId { get; set; }
 
+        [NotMapped]
+        public virtual IQueryable<Pose> Poses { get; set; }
+
+       // public ICollection<Pose> PosesByCategory { get; set; }
+
         [ForeignKey("PoseId")]
         public Pose Pose { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+
     }
 }

@@ -34,37 +34,7 @@ namespace FinalCapstone.Controllers
                 return BadRequest(ModelState);
             }
 
-            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit); // change GET method to bring back all poses without id
-
-            //IQueryable<int> prepIds = from p in _context.Pose
-            //                          join pr in _context.PoseRelationship
-            //                          on p.PoseId equals pr.BasePosePoseId
-            //                          //where p.PoseId == id
-            //                          select pr.PrepPosePoseId;
-
-            //var prepNames = from p in _context.Pose
-            //                where prepIds.Contains(p.PoseId)
-            //                select new Pose
-            //                {
-            //                    PoseId = p.PoseId,
-            //                    CommonName = p.CommonName,
-            //                    Sanskrit = p.Sanskrit,
-            //                    Description = p.Description,
-            //                    Image = p.Image
-
-            //                };
-
-            //var pose = from p in _context.Pose
-            //          // where p.PoseId == id
-            //           select new Pose
-            //           {
-            //               PoseId = p.PoseId,
-            //               CommonName = p.CommonName,
-            //               Sanskrit = p.Sanskrit,
-            //               Description = p.Description,
-            //               Image = p.Image,
-            //               PrepPoses = from prep in prepNames select prep
-            //           };
+            var allPoses = _context.Pose.OrderBy(s => s.Sanskrit); 
 
             if (allPoses == null)
             {
@@ -73,26 +43,6 @@ namespace FinalCapstone.Controllers
 
             return Ok(allPoses);
         }
-
-
-        ////// GET api/values
-        //[HttpGet]
-        //public IActionResult Get()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var allPoses = _context.Pose.OrderBy(s => s.Sanskrit);
-
-        //    if (allPoses == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(allPoses);
-        //}
 
 
         // GET: api/pose/sanskrit

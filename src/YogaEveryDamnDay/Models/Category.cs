@@ -14,6 +14,8 @@ namespace YogaEveryDamnDay.Models
         public string PoseType { get; set; }
 
         public ICollection<PoseCategory> PoseCategories { get; set; }
+
+       // public ICollection<Pose> PosesByCategory { get; set; }
         
 
     }
